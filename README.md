@@ -20,36 +20,23 @@ This repository is a public fork containing a FastAPI entry point and a partial 
 
 ## Prerequisites
 
-- Python 3.9 (the version selected by `Dockerfile`)
-- `pip` and virtual-environment support
-- The missing internal modules described under **Status and limitations**
+- Git, for inspecting the repository locally
+- A dependency and source audit before attempting installation or execution
 
 ## Local setup
 
-The repository declares the following intended FastAPI setup:
+The current snapshot is safe to clone for inspection only:
 
 ```bash
 git clone https://github.com/varunisrani/pppp.git
 cd pppp
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -m uvicorn app:app --host 0.0.0.0 --port 8000
 ```
 
-The included container configuration expresses the same server entry point:
+Do not install the current requirements or attempt to start the application or container. Before any installation or execution, audit and pin every dependency, deduplicate the requirements, remove the `logging` entry (logging is part of Python's standard library), and restore and review the missing internal modules.
 
-```bash
-docker build -t pppp-film-api .
-docker run --rm -p 8000:8000 pppp-film-api
-```
+### Declared but unverified entry points
 
-The partial Streamlit entry point, if its missing modules are restored, is intended to run from its own directory:
-
-```bash
-cd sd1
-python -m streamlit run app.py
-```
+These declarations describe repository intent, not runnable setup: root `app.py` declares a FastAPI application; `Dockerfile` declares an Uvicorn process serving `app:app`; and `sd1/app.py` is a partial Streamlit interface. The declared entry-point behavior has not been verified from a fresh clone because required internal modules are missing and the dependency set is unsafe and unreproducible in its current form.
 
 ## Configuration
 
@@ -68,4 +55,4 @@ sd1/static/        Checked-in example result and storyboard files
 
 ## Status and limitations
 
-This fork originates from [`vpxop111/pppp`](https://github.com/vpxop111/pppp) and does not declare a license. The current snapshot is not runnable from a fresh clone: `app.py` imports `sd1.src.*` and `utils.logging_utils`, while those modules are not tracked, and `sd1/app.py` likewise imports a missing `src/` tree. The requirements are unpinned and include duplicate and standard-library package names. The repository also contains a checked-in virtual environment, generated data, binary model/vector files, logs, and cache files; these should be reviewed before treating the project as reproducible or production-ready.
+This fork originates from [`vpxop111/pppp`](https://github.com/vpxop111/pppp) and does not declare a license. The current snapshot is not runnable from a fresh clone: `app.py` imports `sd1.src.*` and `utils.logging_utils`, while those modules are not tracked, and `sd1/app.py` likewise imports a missing `src/` tree. The requirements are unpinned, duplicated, and include `logging`, which must not be installed as a third-party substitute for the Python standard library module. The repository also contains a checked-in virtual environment, generated data, binary model/vector files, logs, and cache files; these should be reviewed before treating the project as reproducible or production-ready.
